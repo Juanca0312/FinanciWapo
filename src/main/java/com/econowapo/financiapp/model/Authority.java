@@ -1,30 +1,29 @@
 package com.econowapo.financiapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "users")
-@EntityListeners(AuditingEntityListener.class)
+@Table(name = "authorities")
 @Data
-public class User {
+public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
     @NotBlank
-    @Size(max = 60)
-    private String password;
+    private String authority;
 
-    @NotNull
-    @NotBlank
-    @Size(max = 9)
-    private String username;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
+    private User user;
 
 }
