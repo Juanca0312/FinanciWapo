@@ -19,6 +19,10 @@ public class User {
 
     @NotNull
     @NotBlank
+    private int enabled;
+
+    @NotNull
+    @NotBlank
     @Size(max = 60)
     private String password;
 
@@ -26,5 +30,7 @@ public class User {
     @NotBlank
     @Size(max = 9)
     private String username;
+
+
 
 }
