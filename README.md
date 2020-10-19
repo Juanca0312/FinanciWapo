@@ -1,4 +1,4 @@
 # FinanciApp
-## Finance Manager
+## Finance Back-End
 Developed in Java, Spring
 
