@@ -1,5 +1,6 @@
 package com.econowapo.financiapp.controller;
 
+import com.econowapo.financiapp.model.CartLineInfo;
 import com.econowapo.financiapp.model.Order;
 import com.econowapo.financiapp.resource.OrderResource;
 import com.econowapo.financiapp.resource.SaveOrderResource;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,6 +55,14 @@ public class OrderController {
         return convertToResource(orderService.createOrder(customerId, convertToEntity(resource)));
     }
 
+    @PostMapping("/orders/{orderId}/articles")
+    public OrderResource ShoppingCartInfo(@PathVariable(name = "orderId") Long orderId,
+            @Valid @RequestBody List<CartLineInfo> resource) {
+        return convertToResource(orderService.assignOrderArticle(orderId, resource));
+        //List<CartLineInfo> resourcess = resource;
+        //return new ArrayList<>(resourcess);
+    }
+
     @PutMapping("/customers/{customerId}/orders/{orderId}")
     public OrderResource updateOrder(@PathVariable(name = "customerId") Long customerId,
                                            @PathVariable(name = "orderId") Long orderId,
@@ -66,9 +76,12 @@ public class OrderController {
         return orderService.deleteOrder(customerId, orderId);
     }
 
+
+
     private Order convertToEntity(SaveOrderResource resource) {
         return mapper.map(resource, Order.class);
     }
+
 
     private OrderResource convertToResource(Order entity) {
         return mapper.map(entity, OrderResource.class);
