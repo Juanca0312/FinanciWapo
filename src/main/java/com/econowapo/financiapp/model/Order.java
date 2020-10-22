@@ -44,5 +44,8 @@ public class Order {
     @OneToMany(mappedBy = "order")
     List<Order_Detail> order_details;
 
+    //Many To Many Order-CreditAccount
+    @OneToMany(mappedBy = "order")
+    List<CreditAccountMovement> creditAccountMovements;
 
 }

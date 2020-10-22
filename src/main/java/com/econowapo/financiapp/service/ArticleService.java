@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 public interface ArticleService {
     Page<Article> getAllArticles(Pageable pageable);
     Article getArticleById(Long articleId);
+    Page<Article> getAllArticlesByOrderId(Long orderId, Pageable pageable);
     Article createArticle(Article article);
     Article updateArticle(Long articleId, Article articleRequest);
     ResponseEntity<?> deleteArticle(Long articleId);

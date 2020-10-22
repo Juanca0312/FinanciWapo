@@ -39,6 +39,13 @@ public class ArticleController {
         return convertToResource(articleService.getArticleById(articleId));
     }
 
+    @GetMapping("/orders/{orderId}/articles")
+    public Page<ArticleResource> getAllArticlesByOrderId(@PathVariable(name = "orderId") Long orderId, Pageable pageable) {
+        List<ArticleResource> articles = articleService.getAllArticlesByOrderId(orderId, pageable).getContent().stream().map(this::convertToResource).collect(Collectors.toList());
+        int articlesSize = articles.size();
+        return new PageImpl<>(articles, pageable, articlesSize);
+    }
+
     @PostMapping("/articles")
     public ArticleResource createArticle(@Valid @RequestBody SaveArticleResource resource)  {
         Article article = convertToEntity(resource);
@@ -50,6 +57,7 @@ public class ArticleController {
         Article article = convertToEntity(resource);
         return convertToResource(articleService.updateArticle(articleId, article));
     }
+
 
     @DeleteMapping("/articles/{id}")
     public ResponseEntity<?> deleteArticle(@PathVariable(name = "id") Long articleId) {
