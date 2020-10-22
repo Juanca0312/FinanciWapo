@@ -2,44 +2,39 @@ package com.econowapo.financiapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Entity
-@Table(name = "customers")
+@Table(name = "payment_moves")
 @Data
-public class Customer {
-
+public class PaymentMove {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank
-    @NotNull
-    @Size(max = 50)
-    private String address;
 
     @NotNull
     @NotBlank
     private int state;
 
-    @Size(max = 50)
-    @NotBlank
     @NotNull
-    private String name;
+    @NotBlank
+    private Date generated_date;
 
-    //Destination from One To Many with User
+    @NotNull
+    @NotBlank
+    private double amount;
+
+    //Many To One Payment
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "payment_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private User user;
-
-    //One to One with credicAccount
-    @OneToOne(mappedBy = "customer")
-    private CreditAccount creditAccount;
-
+    private Payment payment;
 
 }

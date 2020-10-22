@@ -31,6 +31,10 @@ public class User {
     @Size(max = 9)
     private String username;
 
+    //Relationship One To Many in Customer
+
+
+
 
 
 }
