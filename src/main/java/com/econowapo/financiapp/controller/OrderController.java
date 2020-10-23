@@ -63,6 +63,11 @@ public class OrderController {
         //return new ArrayList<>(resourcess);
     }
 
+    @PostMapping("/orders/{orderId}/creditAccount")
+    public OrderResource CreditAccountMovement(@PathVariable(name = "orderId") Long orderId) {
+        return convertToResource(orderService.assignOrderCreditAccount(orderId));
+    }
+
     @PutMapping("/customers/{customerId}/orders/{orderId}")
     public OrderResource updateOrder(@PathVariable(name = "customerId") Long customerId,
                                            @PathVariable(name = "orderId") Long orderId,
@@ -75,6 +80,8 @@ public class OrderController {
                                             @PathVariable(name = "orderId") Long orderId) {
         return orderService.deleteOrder(customerId, orderId);
     }
+
+
 
 
 

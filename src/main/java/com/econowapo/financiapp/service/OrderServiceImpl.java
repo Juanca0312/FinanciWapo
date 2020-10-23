@@ -1,14 +1,8 @@
 package com.econowapo.financiapp.service;
 
 import com.econowapo.financiapp.exception.ResourceNotFoundException;
-import com.econowapo.financiapp.model.Article;
-import com.econowapo.financiapp.model.CartLineInfo;
-import com.econowapo.financiapp.model.Order;
-import com.econowapo.financiapp.model.Order_Detail;
-import com.econowapo.financiapp.repository.ArticleRepository;
-import com.econowapo.financiapp.repository.CustomerRepository;
-import com.econowapo.financiapp.repository.OrderDetailRepository;
-import com.econowapo.financiapp.repository.OrderRepository;
+import com.econowapo.financiapp.model.*;
+import com.econowapo.financiapp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +26,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderDetailRepository orderDetailRepository;
+
+    @Autowired
+    private CreditAccountRepository creditAccountRepository;
+
+    @Autowired
+    private CreditAccountMovementRepository creditAccountMovementRepository;
+
 
 
 
@@ -112,6 +113,52 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return order;
+    }
+
+    @Override
+    public Order assignOrderCreditAccount(Long orderId) {
+        //crea un movimiento, resta el saldo actual el importe
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order", "Id", orderId));
+        Long customerId = order.getCustomer().getId();
+        CreditAccount creditAccount = creditAccountRepository.findByCustomerId(customerId);
+
+        CreditAccountMovement creditAccountMovement = new CreditAccountMovement();
+        //sacamos el amount de orderDetail
+        List<Order_Detail> orderDetails = orderDetailRepository.findByOrderId(orderId);
+        double amount2 = 0;
+        for (Order_Detail od: orderDetails) {
+            if(od.getQuantity() > 1) {
+                amount2 += od.getArticle().getPrice() * od.getQuantity();
+            }
+            else {
+                amount2 += od.getArticle().getPrice();
+            }
+
+        }
+
+        if(creditAccount.getActual_balance() < amount2){
+            throw  new ResourceNotFoundException( "This Order amount (" + amount2 + ") cannot be greater than the actual balance: " + creditAccount.getActual_balance() );
+        }
+        creditAccountMovement.setAmount(amount2);
+
+        //restamos el actual balance con el precio de la orden
+        creditAccount.setActual_balance(creditAccount.getActual_balance() - amount2);
+        creditAccountRepository.save(creditAccount);
+
+        //Creamos el CreditAccountMovement
+        creditAccountMovement.setCreditAccount(creditAccount);
+        creditAccountMovement.setOrder(order);
+        creditAccountMovement.setGenerated_date(order.getGenerated_date());
+        creditAccountMovement.setState(1);
+        order.getCreditAccountMovements().add(creditAccountMovement);
+        creditAccount.getCreditAccountMovements().add(creditAccountMovement);
+        creditAccountMovementRepository.save(creditAccountMovement);
+
+        return order;
+
+
     }
 
 
