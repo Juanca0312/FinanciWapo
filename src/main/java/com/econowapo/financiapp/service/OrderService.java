@@ -16,6 +16,10 @@ public interface OrderService {
     ResponseEntity<?> deleteOrder(Long customerId, Long orderId);
     List<Order> getAllOrders();
 
+    //This create the OrderDetails of the Order
     Order assignOrderArticle(Long orderId, List<CartLineInfo> info);
+
+    //This create a CreditAccountMovement
+    Order assignOrderCreditAccount(Long orderId);
 
 }
