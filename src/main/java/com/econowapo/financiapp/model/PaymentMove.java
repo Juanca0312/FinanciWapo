@@ -24,7 +24,7 @@ public class PaymentMove {
 
     @NotNull
     @NotBlank
-    private Date generated_date;
+    private String generated_date;
 
     @NotNull
     @NotBlank
