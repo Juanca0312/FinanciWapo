@@ -4,18 +4,17 @@ import com.econowapo.financiapp.model.Authority;
 import com.econowapo.financiapp.model.Customer;
 import com.econowapo.financiapp.resource.AuthorityResource;
 import com.econowapo.financiapp.resource.CustomerResource;
+import com.econowapo.financiapp.resource.SaveAuthorityResource;
 import com.econowapo.financiapp.resource.SaveCustomerResource;
 import com.econowapo.financiapp.service.AuthorityService;
 import com.econowapo.financiapp.service.CustomerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.validation.Valid;
+
 
 @RestController
 @CrossOrigin
@@ -31,10 +30,15 @@ public class AuthorityController {
     public AuthorityResource getAuthorityByUserId(
             @PathVariable(name = "userId") Long userId) {
         return convertToResource(authorityService.getAuthorityByUserId(userId));
-
     }
 
-    private Authority convertToEntity(SaveCustomerResource resource) {
+    @PostMapping("/users/{userId}/authority")
+    public AuthorityResource createAuthority(@PathVariable(name = "userId") Long userId,
+                                           @Valid @RequestBody SaveAuthorityResource resource) {
+        return convertToResource(authorityService.createAuthority(userId, convertToEntity(resource)));
+    }
+
+    private Authority convertToEntity(SaveAuthorityResource resource) {
         return mapper.map(resource, Authority.class);
     }
 
