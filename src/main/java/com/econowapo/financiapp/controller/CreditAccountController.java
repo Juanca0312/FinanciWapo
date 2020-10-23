@@ -35,6 +35,21 @@ public class CreditAccountController {
 
     }
 
+    //Get All
+    @GetMapping("/creditAccounts")
+    public Page<CreditAccountResource> getAllCreditAccount(Pageable pageable) {
+        Page<CreditAccount> creditAccountPage = creditAccountService.getAllCreditAccounts(pageable);
+        List<CreditAccountResource> resources = creditAccountPage.getContent().stream().map(this::convertToResource).collect(Collectors.toList());
+        return new PageImpl<>(resources, pageable, resources.size());
+    }
+
+    //Get By Id
+    //Get profiles by id
+    @GetMapping("/creditAccounts/{id}")
+    public CreditAccountResource getCreditAccountById(@PathVariable(name = "id") Long creditAccountId) {
+        return convertToResource(creditAccountService.getCreditAccountById(creditAccountId));
+    }
+
     //Create
     @PostMapping("/customers/{customerId}/creditAccounts")
     public CreditAccountResource createCreditAccount(@PathVariable(name = "customerId") Long customerId, @Valid @RequestBody SaveCreditAccountResource resource) {

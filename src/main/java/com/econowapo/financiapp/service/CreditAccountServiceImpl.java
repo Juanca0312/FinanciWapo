@@ -43,19 +43,17 @@ public class CreditAccountServiceImpl implements CreditAccountService{
         return creditAccountRepository.save(creditAccount);
     }
 
-    @Override
-    public ResponseEntity<?> deleteCreditAccount(Long customerId, Long creditAccountId) {
-        return null;
-    }
 
     @Override
     public CreditAccount getCreditAccountById(Long creditAccountId) {
-        return null;
+
+        return creditAccountRepository.findById(creditAccountId)
+                .orElseThrow(() -> new ResourceNotFoundException("creditAccount", "Id", creditAccountId));
     }
 
     @Override
     public Page<CreditAccount> getAllCreditAccounts(Pageable pageable) {
-        return null;
+        return creditAccountRepository.findAll(pageable);
     }
 
     @Override

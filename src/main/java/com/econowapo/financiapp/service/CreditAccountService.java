@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 public interface CreditAccountService {
     CreditAccount createCreditAccount(Long customerId, CreditAccount creditAccount);
     CreditAccount updateCreditAccount(Long customerId, CreditAccount creditAccountRequest);
-    ResponseEntity<?> deleteCreditAccount(Long customerId, Long creditAccountId);
     CreditAccount getCreditAccountById(Long creditAccountId);
     Page<CreditAccount> getAllCreditAccounts(Pageable pageable);
     CreditAccount getCreditAccountByCustomerId(Long customerId);
