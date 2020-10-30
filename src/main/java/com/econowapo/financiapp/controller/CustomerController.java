@@ -36,6 +36,14 @@ public class CustomerController {
         return new PageImpl<>(resources, pageable, resources.size());
     }
 
+    //get all
+    @GetMapping("/customers")
+    public Page<CustomerResource> getAllCustomers(Pageable pageable ) {
+        Page<Customer> customerPage = customerService.getAllCustomers( pageable);
+        List<CustomerResource> resources = customerPage.getContent().stream().map(this::convertToResource).collect(Collectors.toList());
+        return new PageImpl<>(resources, pageable, resources.size());
+    }
+
     //get by customer id
     @GetMapping("/users/{userId}/customers/{customerId}")
     public CustomerResource getCustomerByIdAndUserId(@PathVariable(name = "userId") Long userId,

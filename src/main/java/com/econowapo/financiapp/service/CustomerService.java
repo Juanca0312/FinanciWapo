@@ -11,7 +11,7 @@ public interface CustomerService {
     Customer createCustomer(Long userId,Customer costumer);
     Customer updateCustomer(Long userId,Long customerId, Customer customerDetail);
     ResponseEntity<?> deleteCustomer(Long userId, Long customerId);
-    List<Customer> getAllCustomers();
+    Page<Customer> getAllCustomers(Pageable pageable);
     Page<Customer> getAllCustomersByUserId(Long userId, Pageable pageable);
     Customer getCustomerByIdAndUserId(Long userId, Long customerId);
 
