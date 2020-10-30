@@ -1,5 +1,6 @@
 package com.econowapo.financiapp.controller;
 
+import com.econowapo.financiapp.model.CustomerInfo;
 import com.econowapo.financiapp.model.User;
 import com.econowapo.financiapp.resource.SaveUserResource;
 import com.econowapo.financiapp.resource.UserResource;
@@ -33,6 +34,11 @@ public class UserController {
         List<UserResource> resources = usersPage.getContent().stream().map(this::convertToResource).collect(Collectors.toList());
 
         return new PageImpl<>(resources, pageable, resources.size());
+    }
+
+    @GetMapping("/customerInfo")
+    public List<CustomerInfo> getCustomerInfo(){
+        return userService.getCustomersInfo();
     }
 
     @GetMapping("/users/{id}")
