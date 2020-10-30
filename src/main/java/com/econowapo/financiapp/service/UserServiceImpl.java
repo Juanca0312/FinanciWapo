@@ -62,24 +62,30 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<CustomerInfo> getCustomersInfo() {
-        CustomerInfo customerInfoo = new CustomerInfo();
-        List<CustomerInfo> customerInfo = new ArrayList<>();
+
+        List<CustomerInfo> customerInfoList = new ArrayList<>();
         List<Customer> customers =  customerRepository.findAll();
-        User user = new User();
-        CreditAccount creditAccount = new CreditAccount();
+
         for (Customer customer : customers){
+            CustomerInfo customerInfo = new CustomerInfo();
+
+            User user = new User();
             user = customer.getUser();
+
+            CreditAccount creditAccount = new CreditAccount();
             creditAccount = creditAccountRepository.findByCustomerId(customer.getId());
-            customerInfoo.setCustomerId(customer.getId());
-            customerInfoo.setAddress(customer.getAddress());
-            customerInfoo.setDate(creditAccount.getGenerated_date());
-            customerInfoo.setName(customer.getName());
-            customerInfoo.setPassword(user.getPassword());
-            customerInfoo.setUsername(user.getUsername());
-            customerInfoo.setRate(creditAccount.getInterest_rate_value());
-            customerInfoo.setRate_type(creditAccount.getInterest_rate());
-            customerInfo.add(customerInfoo);
+
+            customerInfo.setCustomerId(customer.getId());
+            customerInfo.setAddress(customer.getAddress());
+            customerInfo.setDate(creditAccount.getGenerated_date());
+            customerInfo.setName(customer.getName());
+            customerInfo.setPassword(user.getPassword());
+            customerInfo.setUsername(user.getUsername());
+            customerInfo.setRate(creditAccount.getInterest_rate_value());
+            customerInfo.setRate_type(creditAccount.getInterest_rate());
+
+            customerInfoList.add(customerInfo);
         }
-        return customerInfo;
+        return customerInfoList;
     }
 }
