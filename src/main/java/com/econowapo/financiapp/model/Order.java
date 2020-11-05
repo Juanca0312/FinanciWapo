@@ -34,6 +34,10 @@ public class Order {
     @NotNull
     private int payment_method;
 
+    @NotBlank
+    @NotNull
+    private double total_amount;
+
     //One to many Customer
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "customer_id", nullable = false)

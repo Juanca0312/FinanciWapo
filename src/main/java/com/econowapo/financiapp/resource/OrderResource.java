@@ -18,4 +18,5 @@ public class OrderResource {
     private Date accepted_date;
     private Date generated_date;
     private int payment_method;
+    private double total_amount;
 }

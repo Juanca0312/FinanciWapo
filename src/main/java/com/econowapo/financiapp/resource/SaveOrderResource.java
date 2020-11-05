@@ -23,4 +23,8 @@ public class SaveOrderResource {
     @NotBlank
     @NotNull
     private int payment_method;
+
+    @NotBlank
+    @NotNull
+    private double total_amount;
 }
