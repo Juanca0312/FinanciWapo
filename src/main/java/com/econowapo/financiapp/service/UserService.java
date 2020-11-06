@@ -12,6 +12,7 @@ public interface UserService {
     Page<User> getAllUsers(Pageable pageable);
     User getUserById(Long userId);
     User createUser(User user);
+    User login(User user);
     User updateUser(Long userId, User userRequest);
     ResponseEntity<?> deleteUser(Long userId);
     List<CustomerInfo> getCustomersInfo();
