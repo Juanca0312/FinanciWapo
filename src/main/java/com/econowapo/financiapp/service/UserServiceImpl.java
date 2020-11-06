@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -40,6 +41,18 @@ public class UserServiceImpl implements UserService{
     @Override
     public User createUser(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public User login(User userRequest) {
+        User myUser = userRepository.findByUsername(userRequest.getUsername());
+        if(myUser == null){
+            return userRequest; //wrong username
+        }
+        if(userRequest.getPassword().equals(myUser.getPassword())){
+            return myUser; //found user
+        }
+        return userRequest; //wrong password
     }
 
     @Override
