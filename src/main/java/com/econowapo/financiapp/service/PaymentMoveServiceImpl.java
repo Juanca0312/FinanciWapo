@@ -2,10 +2,7 @@ package com.econowapo.financiapp.service;
 
 import com.econowapo.financiapp.exception.ResourceNotFoundException;
 import com.econowapo.financiapp.model.*;
-import com.econowapo.financiapp.repository.CreditAccountMovementRepository;
-import com.econowapo.financiapp.repository.CreditAccountRepository;
-import com.econowapo.financiapp.repository.PaymentMoveRepository;
-import com.econowapo.financiapp.repository.PaymentRepository;
+import com.econowapo.financiapp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +13,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.lang.Math;
+import java.util.Optional;
 
 
 @Service
 public class PaymentMoveServiceImpl implements PaymentMoveService{
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Autowired
     private PaymentMoveRepository paymentMoveRepository;
@@ -117,13 +118,43 @@ public class PaymentMoveServiceImpl implements PaymentMoveService{
     }
 
     @Override
-    public List<PaymentMove> getAllPaymentMoves() {
-        return paymentMoveRepository.findAll();
+    public List<PaymentInfo> getAllPaymentMoves() {
+        List<PaymentInfo> paymentsInfo = new ArrayList<>();
+        List<PaymentMove> payments = paymentMoveRepository.findAll();
+        for (PaymentMove pmovement: payments){
+            PaymentInfo info = new PaymentInfo();
+            info.setAmount(pmovement.getAmount());
+            info.setGenerated_date(pmovement.getGenerated_date());
+            info.setPaymentId(pmovement.getId());
+            info.setState(pmovement.getState());
+            Payment payment = pmovement.getPayment();
+            CreditAccount creditAccount =  payment.getCreditAccount();
+            Customer customer = creditAccount.getCustomer();
+            info.setCustomerName(customer.getName());
+            paymentsInfo.add(info);
+        }
+
+        return paymentsInfo;
     }
 
     @Override
-    public Page<PaymentMove> getAllPaymentMovesByPaymentId(Long paymentId, Pageable pageable) {
-        return paymentMoveRepository.findByPaymentId(paymentId,pageable);
+    public List<PaymentInfo> getAllPaymentMovesByCustomerId(Long customerId) {
+        CreditAccount creditAccount = creditAccountRepository.findByCustomerId(customerId);
+        Customer customer = creditAccount.getCustomer();
+        Payment payment = paymentRepository.findByCreditAccountId(creditAccount.getId());
+        List<PaymentMove> paymentMoves = paymentMoveRepository.findByPaymentId(payment.getId());
+        List<PaymentInfo> paymentsInfo = new ArrayList<>();
+
+        for (PaymentMove pmovement: paymentMoves) {
+            PaymentInfo info = new PaymentInfo();
+            info.setCustomerName(customer.getName());
+            info.setAmount(pmovement.getAmount());
+            info.setGenerated_date(pmovement.getGenerated_date());
+            info.setPaymentId(pmovement.getId());
+            info.setState(pmovement.getState());
+            paymentsInfo.add(info);
+        }
+        return paymentsInfo;
     }
 
     @Override

@@ -85,8 +85,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public List<OrderInfo> getAllOrders() {
+        List<Order> orders = orderRepository.findAll();
+        List<OrderInfo> orderInfos = new ArrayList<>();
+        for(Order o : orders){
+            OrderInfo info = new OrderInfo();
+            info.setOrderId(o.getId());
+            info.setAccepted_date(o.getAccepted_date());
+            info.setGenerated_date(o.getGenerated_date());
+            info.setPayment_method(o.getPayment_method());
+            info.setState(o.getState());
+            info.setTotal_amount(o.getTotal_amount());
+            Customer customer = o.getCustomer();
+            info.setCustomerName(customer.getName());
+            orderInfos.add(info);
+
+        }
+        return orderInfos;
     }
 
     @Override

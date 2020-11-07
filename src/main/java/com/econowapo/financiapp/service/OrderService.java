@@ -2,6 +2,7 @@ package com.econowapo.financiapp.service;
 
 import com.econowapo.financiapp.model.CartLineInfo;
 import com.econowapo.financiapp.model.Order;
+import com.econowapo.financiapp.model.OrderInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ public interface OrderService {
     Order createOrder(Long customerId,Order order);
     Order updateOrder(Long customerId,Long orderId, Order orderDetails);
     ResponseEntity<?> deleteOrder(Long customerId, Long orderId);
-    List<Order> getAllOrders();
+    List<OrderInfo> getAllOrders();
 
     //This create the OrderDetails of the Order
     Order assignOrderArticle(Long orderId, List<CartLineInfo> info);

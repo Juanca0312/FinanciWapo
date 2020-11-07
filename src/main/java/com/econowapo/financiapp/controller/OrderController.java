@@ -2,6 +2,7 @@ package com.econowapo.financiapp.controller;
 
 import com.econowapo.financiapp.model.CartLineInfo;
 import com.econowapo.financiapp.model.Order;
+import com.econowapo.financiapp.model.OrderInfo;
 import com.econowapo.financiapp.resource.OrderResource;
 import com.econowapo.financiapp.resource.SaveOrderResource;
 import com.econowapo.financiapp.service.OrderService;
@@ -30,7 +31,7 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping("/orders")
-    public List<Order> getAllOrders() {
+    public List<OrderInfo> getAllOrders() {
         return orderService.getAllOrders();
     }
 
