@@ -7,10 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface PaymentMoveRepository extends JpaRepository<PaymentMove, Long> {
     Page<PaymentMove> findByPaymentId(Long paymentId, Pageable pageable);
+    List<PaymentMove> findByPaymentId(Long paymentId);
     Optional<PaymentMove> findByIdAndPaymentId(Long id, Long paymentId);
 }

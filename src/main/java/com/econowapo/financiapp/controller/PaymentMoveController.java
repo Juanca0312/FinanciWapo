@@ -1,6 +1,7 @@
 package com.econowapo.financiapp.controller;
 
 import com.econowapo.financiapp.model.Order;
+import com.econowapo.financiapp.model.PaymentInfo;
 import com.econowapo.financiapp.model.PaymentMove;
 import com.econowapo.financiapp.resource.*;
 import com.econowapo.financiapp.service.PaymentMoveService;
@@ -24,17 +25,14 @@ public class PaymentMoveController {
     @Autowired
     private PaymentMoveService paymentMoveService;
 
-    @GetMapping("/payments/{paymentId}/paymentMoves")
-    public Page<PaymentMoveResource> getAllPaymentsMovesByMovementId(
-            @PathVariable(name = "paymentId") Long paymentId,
-            Pageable pageable) {
-        Page<PaymentMove> paymentMovePage = paymentMoveService.getAllPaymentMovesByPaymentId(paymentId, pageable);
-        List<PaymentMoveResource> resources = paymentMovePage.getContent().stream().map(this::convertToResource).collect(Collectors.toList());
-        return new PageImpl<>(resources, pageable, resources.size());
+    @GetMapping("/customers/{customerId}/paymentMoves")
+    public List<PaymentInfo> getAllPaymentsMovesByCustomerId(
+            @PathVariable(name = "customerId") Long customerId) {
+        return paymentMoveService.getAllPaymentMovesByCustomerId(customerId);
     }
 
     @GetMapping("/paymentMoves")
-    public List<PaymentMove> getAllOrders() {
+    public List<PaymentInfo> getAllPaymentMoves() {
         return paymentMoveService.getAllPaymentMoves();
     }
 

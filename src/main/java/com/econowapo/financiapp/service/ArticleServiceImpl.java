@@ -2,6 +2,7 @@ package com.econowapo.financiapp.service;
 
 import com.econowapo.financiapp.exception.ResourceNotFoundException;
 import com.econowapo.financiapp.model.Article;
+import com.econowapo.financiapp.model.CartLineInfo;
 import com.econowapo.financiapp.model.Order_Detail;
 import com.econowapo.financiapp.repository.ArticleRepository;
 import com.econowapo.financiapp.repository.OrderDetailRepository;
@@ -40,16 +41,30 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public Page<Article> getAllArticlesByOrderId(Long orderId, Pageable pageable) {
-        Page<Order_Detail> order_detailsPage = orderDetailRepository.findByOrderId(orderId, pageable);
-        List<Order_Detail> order_details = order_detailsPage.toList();
-        List<Article> articles = new ArrayList<>();
+    public List<CartLineInfo> getAllArticlesByOrderId(Long orderId) {
+        List<Order_Detail> order_details = orderDetailRepository.findByOrderId(orderId);
+        List<CartLineInfo> cartLineInfos = new ArrayList<>();
         for (Order_Detail od: order_details) {
-            articles.add(od.getArticle());
-        }
-        int articlesCount = articles.size();
+            CartLineInfo info = new CartLineInfo();
+            Article article = od.getArticle();
+            info.setName(article.getName());
+            long e=od.getId();
+            String j=String.valueOf(e);
+            info.setId(j);
+            double price = article.getPrice();
+            String priceS = String.valueOf(price);
+            info.setPrice(priceS);
+            int i=od.getQuantity();
+            String s=String.valueOf(i);
+            info.setQuantity(s);
 
-        return new PageImpl<>(articles, pageable, articlesCount);
+
+            cartLineInfos.add(info);
+
+        }
+
+
+        return cartLineInfos;
 
 
     }

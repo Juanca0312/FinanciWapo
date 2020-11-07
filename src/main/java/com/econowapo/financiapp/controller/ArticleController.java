@@ -1,6 +1,7 @@
 package com.econowapo.financiapp.controller;
 
 import com.econowapo.financiapp.model.Article;
+import com.econowapo.financiapp.model.CartLineInfo;
 import com.econowapo.financiapp.resource.ArticleResource;
 import com.econowapo.financiapp.resource.SaveArticleResource;
 import com.econowapo.financiapp.service.ArticleService;
@@ -40,10 +41,8 @@ public class ArticleController {
     }
 
     @GetMapping("/orders/{orderId}/articles")
-    public Page<ArticleResource> getAllArticlesByOrderId(@PathVariable(name = "orderId") Long orderId, Pageable pageable) {
-        List<ArticleResource> articles = articleService.getAllArticlesByOrderId(orderId, pageable).getContent().stream().map(this::convertToResource).collect(Collectors.toList());
-        int articlesSize = articles.size();
-        return new PageImpl<>(articles, pageable, articlesSize);
+    public List<CartLineInfo> getAllArticlesByOrderId(@PathVariable(name = "orderId") Long orderId) {
+        return articleService.getAllArticlesByOrderId(orderId);
     }
 
     @PostMapping("/articles")
