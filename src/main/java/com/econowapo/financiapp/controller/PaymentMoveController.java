@@ -36,9 +36,9 @@ public class PaymentMoveController {
         return paymentMoveService.getAllPaymentMoves();
     }
 
-    @PostMapping("/payments/{paymentId}/paymentMoves")
-    public PaymentMoveResource CreatePaymentMove(@PathVariable(name = "paymentId") Long paymentId) {
-        return convertToResource(paymentMoveService.createPaymentMove(paymentId));
+    @PostMapping("/creditAccount/{creditAccountId}/paymentMoves")
+    public PaymentMoveResource CreatePaymentMove(@PathVariable(name = "creditAccountId") Long creditAccountId) {
+        return convertToResource(paymentMoveService.createPaymentMove(creditAccountId));
     }
 
     private PaymentMove convertToEntity(SavePaymentMoveResource resource) {
