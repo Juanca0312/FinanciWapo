@@ -47,6 +47,7 @@ public class ArticleServiceImpl implements ArticleService{
         for (Order_Detail od: order_details) {
             CartLineInfo info = new CartLineInfo();
             Article article = od.getArticle();
+
             info.setName(article.getName());
             long e=od.getId();
             String j=String.valueOf(e);

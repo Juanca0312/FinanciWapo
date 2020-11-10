@@ -12,6 +12,7 @@ import java.util.List;
 public interface OrderService {
     Page<Order> getAllOrdersByCustomerId(Long customerId, Pageable pageable);
     Order getOrderByIdAndCustomerId(Long customerId, Long orderId);
+    List<OrderInfo> getUnpaidOrders(Long customerId);
     Order createOrder(Long customerId,Order order);
     Order updateOrder(Long customerId,Long orderId, Order orderDetails);
     ResponseEntity<?> deleteOrder(Long customerId, Long orderId);
