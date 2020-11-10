@@ -50,6 +50,12 @@ public class OrderController {
         return convertToResource(orderService.getOrderByIdAndCustomerId(customerId, orderId));
     }
 
+    @GetMapping("/customers/{customerId}/unpaidOrders")
+    public List<OrderInfo> getUnpaidOrders(@PathVariable(name = "customerId") Long customerId){
+        return orderService.getUnpaidOrders(customerId);
+    }
+
+
     @PostMapping("/customers/{customerId}/orders")
     public OrderResource createOrder(@PathVariable(name = "customerId") Long customerId,
                                            @Valid @RequestBody SaveOrderResource resource) {

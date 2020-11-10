@@ -49,6 +49,27 @@ public class OrderServiceImpl implements OrderService {
                 ));
     }
 
+    @Override
+    public List<OrderInfo> getUnpaidOrders(Long customerId) {
+        List<Order> orders = orderRepository.findByCustomerId(customerId);
+        List<OrderInfo> unpaidOrders = new ArrayList<>();
+        for(Order o: orders){
+            List<CreditAccountMovement> creditAccountMovement = o.getCreditAccountMovements();
+            if(creditAccountMovement.get(0).getState() == 1){
+                OrderInfo orderInfo = new OrderInfo();
+                orderInfo.setTotal_amount(o.getTotal_amount());
+                orderInfo.setGenerated_date(o.getGenerated_date());
+                orderInfo.setAccepted_date(o.getAccepted_date());
+                orderInfo.setPayment_method(o.getPayment_method());
+                orderInfo.setOrderId(o.getId());
+                orderInfo.setState(o.getState());
+                unpaidOrders.add(orderInfo);
+            }
+
+        }
+        return unpaidOrders;
+    }
+
 
     @Override
     public Order createOrder(Long customerId, Order order) {
@@ -168,6 +189,8 @@ public class OrderServiceImpl implements OrderService {
         creditAccountMovement.setGenerated_date(order.getGenerated_date());
         creditAccountMovement.setState(1);
         order.getCreditAccountMovements().add(creditAccountMovement);
+        order.setTotal_amount(amount2);
+        orderRepository.save(order);
         creditAccount.getCreditAccountMovements().add(creditAccountMovement);
         creditAccountMovementRepository.save(creditAccountMovement);
 
