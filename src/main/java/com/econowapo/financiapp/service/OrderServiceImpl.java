@@ -175,12 +175,16 @@ public class OrderServiceImpl implements OrderService {
         }
 
         if(creditAccount.getActual_balance() < amount2){
+            //No pagado
+            order.setState(2);
+            orderRepository.save(order);
             throw  new ResourceNotFoundException( "This Order amount (" + amount2 + ") cannot be greater than the actual balance: " + creditAccount.getActual_balance() );
         }
         creditAccountMovement.setAmount(amount2);
 
         //restamos el actual balance con el precio de la orden
         creditAccount.setActual_balance(creditAccount.getActual_balance() - amount2);
+
         creditAccountRepository.save(creditAccount);
 
         //Creamos el CreditAccountMovement
