@@ -56,17 +56,24 @@ public class PaymentMoveServiceImpl implements PaymentMoveService{
         int day =Integer.parseInt(dia);
         //amount
         double capital = creditAccount.getBalance() - creditAccount.getActual_balance();
+        System.out.println("CAPITAL");
         System.out.println(capital);
         double dias = 30;
         double amount = 0;
 
         if(creditAccount.getInterest_rate() == 1) {//simple
             double interestRate = creditAccount.getInterest_rate_value() / 100;
+            System.out.println("INTRATE");
+            System.out.println(interestRate);
             double t = dias/360;
+            System.out.println("t");
+            System.out.println(t);
             amount = capital*(1+interestRate*t);
             if(day > 2){
                 amount += 10;
             }
+            System.out.println("AMONT");
+            System.out.println(amount);
         }
         else if (creditAccount.getInterest_rate() == 2){//nominal
             double interestRate = creditAccount.getInterest_rate_value() / 100;
