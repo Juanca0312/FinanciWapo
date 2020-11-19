@@ -1,5 +1,6 @@
 package com.econowapo.financiapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -43,7 +44,15 @@ public class CreditAccount {
     @NotNull
     private double actual_balance;
 
+    @NotBlank
+    @NotNull
+    private String currency;
+
     //Many to One Currency
+    /*@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "currency_id", nullable = false)
+    @JsonIgnore
+    private Currency currency;*/
 
     //One to One Customer
     @OneToOne(cascade = CascadeType.ALL)

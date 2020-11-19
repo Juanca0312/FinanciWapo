@@ -11,5 +11,6 @@ public interface CreditAccountService {
     CreditAccount getCreditAccountById(Long creditAccountId);
     Page<CreditAccount> getAllCreditAccounts(Pageable pageable);
     CreditAccount getCreditAccountByCustomerId(Long customerId);
+    ResponseEntity<?> maintenancePayment();
 
 }
