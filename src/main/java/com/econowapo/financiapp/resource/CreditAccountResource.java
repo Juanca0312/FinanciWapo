@@ -15,4 +15,5 @@ public class CreditAccountResource {
     private double interest_rate_value;
     private double balance;
     private double actual_balance;
+    private String currency;
 }

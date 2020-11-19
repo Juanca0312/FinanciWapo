@@ -2,13 +2,21 @@ package com.econowapo.financiapp.service;
 
 import com.econowapo.financiapp.exception.ResourceNotFoundException;
 import com.econowapo.financiapp.model.CreditAccount;
+import com.econowapo.financiapp.model.Currency;
+import com.econowapo.financiapp.model.Customer;
 import com.econowapo.financiapp.repository.CreditAccountRepository;
+import com.econowapo.financiapp.repository.CurrencyRepository;
 import com.econowapo.financiapp.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.swing.text.html.Option;
+import javax.validation.constraints.Max;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CreditAccountServiceImpl implements CreditAccountService{
@@ -18,6 +26,9 @@ public class CreditAccountServiceImpl implements CreditAccountService{
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private CurrencyRepository currencyRepository;
 
     @Override
     public CreditAccount createCreditAccount(Long customerId, CreditAccount creditAccount) {
@@ -59,6 +70,18 @@ public class CreditAccountServiceImpl implements CreditAccountService{
     @Override
     public CreditAccount getCreditAccountByCustomerId(Long customerId) {
         return creditAccountRepository.findByCustomerId(customerId);
+    }
+
+    @Override
+    public ResponseEntity<?> maintenancePayment() {
+        List<CreditAccount> creditAccounts =  creditAccountRepository.findAll();
+        for (CreditAccount creditAccount : creditAccounts) {
+            double newBalance = creditAccount.getActual_balance() - 0.1;
+            creditAccount.setActual_balance(newBalance);
+            creditAccountRepository.save(creditAccount);
+        }
+
+        return ResponseEntity.ok().build();
     }
 
 

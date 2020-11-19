@@ -30,6 +30,10 @@ public class SaveCreditAccountResource {
     @NotNull
     private double balance;
 
+    @NotBlank
+    @NotNull
+    private String currency;
+
     //este saldo cambia con los movimientos de cuenta
     @NotBlank
     @NotNull
