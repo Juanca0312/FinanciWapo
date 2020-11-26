@@ -178,7 +178,8 @@ public class OrderServiceImpl implements OrderService {
             //No pagado
             order.setState(2);
             orderRepository.save(order);
-            throw  new ResourceNotFoundException( "This Order amount (" + amount2 + ") cannot be greater than the actual balance: " + creditAccount.getActual_balance() );
+            Order orderNull = new Order();
+            return orderNull;
         }
         creditAccountMovement.setAmount(amount2);
 
