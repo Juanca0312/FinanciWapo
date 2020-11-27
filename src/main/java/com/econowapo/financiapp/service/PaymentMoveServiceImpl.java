@@ -45,6 +45,7 @@ public class PaymentMoveServiceImpl implements PaymentMoveService {
     public PaymentMove createPaymentMove(Long creditAccountId) {
         CreditAccount creditAccount = creditAccountRepository.findById(creditAccountId).orElseThrow(() -> new ResourceNotFoundException("creditAccount", "Id", creditAccountId));
         PaymentMove paymentMove = new PaymentMove();
+        paymentMove.setState(1);
         Payment payment = paymentRepository.findByCreditAccountId(creditAccount.getId());
         List<CreditAccountMovement> creditAccountMovements = creditAccountMovementRepository.findByCreditAccountId(creditAccount.getId());
         List<CreditAccountMovement> creditAccountMovementsActives = new ArrayList<>();
