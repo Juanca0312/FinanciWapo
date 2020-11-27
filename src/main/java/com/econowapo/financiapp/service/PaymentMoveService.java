@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface PaymentMoveService {
     PaymentMove createPaymentMove(Long creditAccountId);
+    PaymentMove showPaymentMove(Long creditAccountId);
     PaymentMove updatePaymentMove(Long paymentId, Long paymentMoveId, PaymentMove paymentMove);
     List<PaymentInfo> getAllPaymentMoves();
     List<PaymentInfo> getAllPaymentMovesByCustomerId(Long customerId);
