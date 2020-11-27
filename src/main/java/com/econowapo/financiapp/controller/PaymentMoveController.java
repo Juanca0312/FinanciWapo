@@ -41,6 +41,11 @@ public class PaymentMoveController {
         return convertToResource(paymentMoveService.createPaymentMove(creditAccountId));
     }
 
+    @GetMapping("/creditAccount/{creditAccountId}/paymentMoves")
+    public PaymentMoveResource showPaymentMove(@PathVariable(name = "creditAccountId") Long creditAccountId) {
+        return convertToResource(paymentMoveService.showPaymentMove(creditAccountId));
+    }
+
     private PaymentMove convertToEntity(SavePaymentMoveResource resource) {
         return mapper.map(resource, PaymentMove.class);
     }
